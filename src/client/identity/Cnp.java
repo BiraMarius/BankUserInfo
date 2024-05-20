@@ -63,7 +63,21 @@ public class Cnp {
     }
 
     public boolean verifyCnp(String cnp){
-
+        //279146358279
+        if(cnp.length() == 13){
+            s1=cnp.charAt(0)*2;
+            a1=cnp.charAt(0)*2;
+            a2=cnp.charAt(0)*2;
+            l1=cnp.charAt(0)*2;
+            l2=cnp.charAt(0)*2;
+            z1=cnp.charAt(0)*2;
+            z2=cnp.charAt(0)*2;
+            j1=cnp.charAt(0)*2;
+            j2=cnp.charAt(0)*2;
+            n1=cnp.charAt(0)*2;
+            n2=cnp.charAt(0)*2;
+            n3=cnp.charAt(0)*2;
+        }
     }
 
     private String verifyGender(String cnp){
@@ -75,45 +89,46 @@ public class Cnp {
         }
     }
 
-    private String verifyYearOfBirth(String cnp){
-        String year = String.valueOf(cnp.charAt(1))+String.valueOf(cnp.charAt(2));
-        if(Integer.valueOf(year)>=10 && Integer.valueOf(year)<100){
-            return year;
-        }else if(){
-            
-        }
-        if(year == "00"){
-
-        }
-    }
-
     //Pay attention, this value won't be ever over 99 or a negative value, it is fine to check but it is pointless
-    private String cc(String s){
-        if(s = "00"){
-            
-        } else if (s= "01") {
-            
-        } else if (s="02") {
-            
-        } else if (s="03") {
-            
-        } else if (s="04") {
-            
-        }else if(s="05"){
-            
-        } else if (s="06") {
-            
-        } else if (s="07") {
-            
-        } else if (s="08") {
-            
-        } else if (s="09") {
-            
+    private String verifyYearOfBirth(String cnp){
+        String year = cnp.substring(1,3);
+//        if(Integer.valueOf(year)>=10 && Integer.valueOf(year)<100){
+//            return year;
+//        }else if(year.equals("00")){
+//            return year;
+//        } else if (year.equals("01")) {
+//            return year;
+//        } else if (year.equals("02")) {
+//            return year;
+//        } else if (year.equals("03")) {
+//            return year;
+//        } else if (year.equals("04")) {
+//            return year;
+//        }else if(year.equals("05")){
+//            return year;
+//        } else if (year.equals("06")) {
+//            return year;
+//        } else if (year.equals("07")) {
+//            return year;
+//        } else if (year.equals("08")) {
+//            return year;
+//        } else if (year.equals("09")) {
+//            return year;
+//        } else {
+//            return null;
+//        }
+
+        if(year.matches("\\d{2}") && Integer.valueOf(year) >= 0 && Integer.valueOf(year)<100){
+            return year;
+        } else {
+            return null;
         }
+
     }
 
-    private String verifyMonthOfBirth(){
 
+    private String verifyMonthOfBirth(String cnp){
+        if(Integer.valueOf(cnp.substring(4,6))>);
     }
 
     private String verifyDayOfBirth(){
