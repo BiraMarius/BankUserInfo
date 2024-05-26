@@ -1,5 +1,7 @@
 package client.identity;
 
+import exceptions.cnpExceptions.CnpLengthNotValid;
+
 public class Cnp {
     // FORMAT OF THE CNP: S AA LL ZZ JJ NNN C
 
@@ -21,6 +23,10 @@ public class Cnp {
 
     //The 8th and 9th represents the county/sector the person have been born, have the domicile or residence at date of issue
     private int countyCode;
+
+    private int nnn;
+
+    private int verificationNumber;
 
     public int getGender() {
         return gender;
@@ -62,23 +68,70 @@ public class Cnp {
         this.countyCode = countyCode;
     }
 
-    public boolean verifyCnp(String cnp){
-        //279146358279
+    public int getNnn() {
+        return nnn;
+    }
+
+    public void setNnn(int nnn) {
+        this.nnn = nnn;
+    }
+
+    public int getVerificationNumber() {
+        return verificationNumber;
+    }
+
+    public void setVerificationNumber(int verificationNumber) {
+        this.verificationNumber = verificationNumber;
+    }
+
+    public void setterOfCnpAttributes(String stringValueOfCnp){
+        setGender(Character.getNumericValue(stringValueOfCnp.charAt(0)));
+        setYearOfBirth(Integer.valueOf(stringValueOfCnp.substring(1,3)));
+        setMonthOfBirth(Integer.valueOf(stringValueOfCnp.substring(3,5)));
+        setDayOfBirth(Integer.valueOf(stringValueOfCnp.substring(5,7)));
+        setCountyCode(Integer.valueOf(stringValueOfCnp.substring(7,9)));
+        setNnn(Integer.valueOf(stringValueOfCnp.substring(9,12)));
+        setVerificationNumber(Character.getNumericValue(stringValueOfCnp.charAt(12)));
+    }
+
+    public int verificatioNumber(String cnp) throws RuntimeException{
+        //279 146 358 279
         if(cnp.length() == 13){
-            s1=cnp.charAt(0)*2;
-            a1=cnp.charAt(0)*2;
-            a2=cnp.charAt(0)*2;
-            l1=cnp.charAt(0)*2;
-            l2=cnp.charAt(0)*2;
-            z1=cnp.charAt(0)*2;
-            z2=cnp.charAt(0)*2;
-            j1=cnp.charAt(0)*2;
-            j2=cnp.charAt(0)*2;
-            n1=cnp.charAt(0)*2;
-            n2=cnp.charAt(0)*2;
-            n3=cnp.charAt(0)*2;
+            int s1=Character.getNumericValue(cnp.charAt(0))*2;
+            int a1=Character.getNumericValue(cnp.charAt(1))*7;
+            int a2=Character.getNumericValue(cnp.charAt(2))*9;
+            int l1=Character.getNumericValue(cnp.charAt(3))*1;
+            int l2=Character.getNumericValue(cnp.charAt(4))*4;
+            int z1=Character.getNumericValue(cnp.charAt(5))*6;
+            int z2=Character.getNumericValue(cnp.charAt(6))*3;
+            int j1=Character.getNumericValue(cnp.charAt(7))*5;
+            int j2=Character.getNumericValue(cnp.charAt(8))*8;
+            int n1=Character.getNumericValue(cnp.charAt(9))*2;
+            int n2=Character.getNumericValue(cnp.charAt(10))*7;
+            int n3=Character.getNumericValue(cnp.charAt(11))*9;
+            return rest((s1+a1+a2+l1+l2+z1+z2+j1+j2+n1+n2+n3));
+        } else {
+            throw new RuntimeException("CNP NOT VALID");
+            //throw  new CnpLengthNotValid("CNP length is not valid. Please enter an valid CNP. ");
         }
     }
+
+    public int rest(int sum){
+        if (sum%11<10){
+            return sum%11;
+        } else {
+            return 1;
+        }
+    }
+
+    public String cnpValid(String stringValueOfCnp){
+        if(Character.getNumericValue(stringValueOfCnp.charAt(12)) == verificatioNumber(stringValueOfCnp)){
+            return "CNP IS VALID.";
+        } else {
+            return "CNP NOT VALID.";
+        }
+    }
+
 
     private String verifyGender(String cnp){
         char genderChar = cnp.charAt(0);
@@ -127,17 +180,17 @@ public class Cnp {
     }
 
 
-    private String verifyMonthOfBirth(String cnp){
-        if(Integer.valueOf(cnp.substring(4,6))>);
-    }
+//    private String verifyMonthOfBirth(String cnp){
+//        if(Integer.valueOf(cnp.substring(4,6))>);
+//    }
 
-    private String verifyDayOfBirth(){
-
-    }
-
-    private String verifyCountyCode(){
-
-    }
+//    private String verifyDayOfBirth(){
+//
+//    }
+//
+//    private String verifyCountyCode(){
+//
+//    }
 
 
 }
