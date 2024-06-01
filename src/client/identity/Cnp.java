@@ -1,6 +1,7 @@
 package client.identity;
 
 import exceptions.cnpExceptions.CnpLengthNotValid;
+import exceptions.cnpExceptions.MonthOfBirthNotValid;
 
 public class Cnp {
     // FORMAT OF THE CNP: S AA LL ZZ JJ NNN C
@@ -10,92 +11,92 @@ public class Cnp {
     //3/4 Born between 1800 and 1899
     //5/6 Born between 2000 and 2099
     //7/8 For foreigners residents of Romania also number 9 reserved
-    private int gender;
+    private String gender;
 
     //The secound and the 3rd numbers are for last 2 numbers from the year of birth.
-    private int yearOfBirth;
+    private String yearOfBirth;
 
     //The 4th and 5th represents the month of birth.
-    private int monthOfBirth;
+    private String monthOfBirth;
 
     //The 6th and 7th represents the day of birth.
-    private int dayOfBirth;
+    private String dayOfBirth;
 
     //The 8th and 9th represents the county/sector the person have been born, have the domicile or residence at date of issue
-    private int countyCode;
+    private String countyCode;
 
-    private int nnn;
+    private String nnn;
 
-    private int verificationNumber;
+    private String verificationNumber;
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public int getYearOfBirth() {
+    public String getYearOfBirth() {
         return yearOfBirth;
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
+    public void setYearOfBirth(String yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public int getMonthOfBirth() {
+    public String getMonthOfBirth() {
         return monthOfBirth;
     }
 
-    public void setMonthOfBirth(int monthOfBirth) {
+    public void setMonthOfBirth(String monthOfBirth) {
         this.monthOfBirth = monthOfBirth;
     }
 
-    public int getDayOfBirth() {
+    public String getDayOfBirth() {
         return dayOfBirth;
     }
 
-    public void setDayOfBirth(int dayOfBirth) {
+    public void setDayOfBirth(String dayOfBirth) {
         this.dayOfBirth = dayOfBirth;
     }
 
-    public int getCountyCode() {
+    public String getCountyCode() {
         return countyCode;
     }
 
-    public void setCountyCode(int countyCode) {
+    public void setCountyCode(String countyCode) {
         this.countyCode = countyCode;
     }
 
-    public int getNnn() {
+    public String getNnn() {
         return nnn;
     }
 
-    public void setNnn(int nnn) {
+    public void setNnn(String nnn) {
         this.nnn = nnn;
     }
 
-    public int getVerificationNumber() {
+    public String getVerificationNumber() {
         return verificationNumber;
     }
 
-    public void setVerificationNumber(int verificationNumber) {
+    public void setVerificationNumber(String verificationNumber) {
         this.verificationNumber = verificationNumber;
     }
 
     public void setterOfCnpAttributes(String stringValueOfCnp){
-        setGender(Character.getNumericValue(stringValueOfCnp.charAt(0)));
-        setYearOfBirth(Integer.valueOf(stringValueOfCnp.substring(1,3)));
-        setMonthOfBirth(Integer.valueOf(stringValueOfCnp.substring(3,5)));
-        setDayOfBirth(Integer.valueOf(stringValueOfCnp.substring(5,7)));
-        setCountyCode(Integer.valueOf(stringValueOfCnp.substring(7,9)));
-        setNnn(Integer.valueOf(stringValueOfCnp.substring(9,12)));
-        setVerificationNumber(Character.getNumericValue(stringValueOfCnp.charAt(12)));
+        setGender(String.valueOf(stringValueOfCnp.charAt(0)));
+        setYearOfBirth(stringValueOfCnp.substring(1,3));
+        setMonthOfBirth(stringValueOfCnp.substring(3,5));
+        setDayOfBirth(stringValueOfCnp.substring(5,7));
+        setCountyCode(stringValueOfCnp.substring(7,9));
+        setNnn(stringValueOfCnp.substring(9,12));
+        setVerificationNumber(String.valueOf(stringValueOfCnp.charAt(12)));
     }
 
+    //TODO Try using 2 for.
     public int verificatioNumber(String cnp) throws RuntimeException{
-        //279 146 358 279
         if(cnp.length() == 13){
             int s1=Character.getNumericValue(cnp.charAt(0))*2;
             int a1=Character.getNumericValue(cnp.charAt(1))*7;
@@ -109,10 +110,10 @@ public class Cnp {
             int n1=Character.getNumericValue(cnp.charAt(9))*2;
             int n2=Character.getNumericValue(cnp.charAt(10))*7;
             int n3=Character.getNumericValue(cnp.charAt(11))*9;
+            setterOfCnpAttributes(cnp);
             return rest((s1+a1+a2+l1+l2+z1+z2+j1+j2+n1+n2+n3));
         } else {
-            throw new RuntimeException("CNP NOT VALID");
-            //throw  new CnpLengthNotValid("CNP length is not valid. Please enter an valid CNP. ");
+            throw new CnpLengthNotValid("CNP length is not valid. Please enter an valid CNP. ");
         }
     }
 
@@ -180,14 +181,18 @@ public class Cnp {
     }
 
 
-//    private String verifyMonthOfBirth(String cnp){
-//        if(Integer.valueOf(cnp.substring(4,6))>);
-//    }
+    private String verifyMonthOfBirth(String cnp){
+        if(Integer.valueOf(cnp.substring(4,6))> 12 && Integer.valueOf(cnp.substring(4,6)) < 1){
+            throw new MonthOfBirthNotValid("ERROR: Month of birth not valid!");
+        } else {
+            return "Month of birth status: OK.";
+        }
+    }
 
-//    private String verifyDayOfBirth(){
-//
-//    }
-//
+    private String verifyDayOfBirth(){
+
+    }
+
 //    private String verifyCountyCode(){
 //
 //    }

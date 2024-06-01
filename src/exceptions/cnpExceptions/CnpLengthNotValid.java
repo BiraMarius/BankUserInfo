@@ -1,8 +1,7 @@
 package exceptions.cnpExceptions;
 
 public class CnpLengthNotValid extends RuntimeException{
-    public String cnpLengthNotValidE(String message){
-        return message;
+    public CnpLengthNotValid(String message) {
+        super(message);
     }
-
 }

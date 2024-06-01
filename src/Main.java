@@ -5,10 +5,11 @@ import client.identity.Cnp;
 public class Main {
     public static void main(String[] args) {
         Cnp cnp = new Cnp();
-        String c = "5001006440047";
+        //String c = "1810114440068";  //Valid CNP
+        //String c = "108221025655";   //Not valid
         int cLength = c.length();
+        cnp.verificatioNumber(c);
         System.out.println(cLength);
-        cnp.setterOfCnpAttributes(c);
         System.out.println("Gender> "+cnp.getGender());
         System.out.println("YearOfBirth> "+cnp.getYearOfBirth());
         System.out.println("MonthOfBirth> "+cnp.getMonthOfBirth());
