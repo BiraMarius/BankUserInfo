@@ -1,7 +1,11 @@
 package client.identity;
 
+import dateTime.DateValidator;
 import exceptions.cnpExceptions.CnpLengthNotValid;
 import exceptions.cnpExceptions.MonthOfBirthNotValid;
+import exceptions.cnpExceptions.YearOfBirthNotValid;
+
+import java.util.Scanner;
 
 public class Cnp {
     // FORMAT OF THE CNP: S AA LL ZZ JJ NNN C
@@ -96,28 +100,28 @@ public class Cnp {
     }
 
     //TODO Try using 2 for.
-    public int verificatioNumber(String cnp) throws RuntimeException{
-        if(cnp.length() == 13){
-            int s1=Character.getNumericValue(cnp.charAt(0))*2;
-            int a1=Character.getNumericValue(cnp.charAt(1))*7;
-            int a2=Character.getNumericValue(cnp.charAt(2))*9;
-            int l1=Character.getNumericValue(cnp.charAt(3))*1;
-            int l2=Character.getNumericValue(cnp.charAt(4))*4;
-            int z1=Character.getNumericValue(cnp.charAt(5))*6;
-            int z2=Character.getNumericValue(cnp.charAt(6))*3;
-            int j1=Character.getNumericValue(cnp.charAt(7))*5;
-            int j2=Character.getNumericValue(cnp.charAt(8))*8;
-            int n1=Character.getNumericValue(cnp.charAt(9))*2;
-            int n2=Character.getNumericValue(cnp.charAt(10))*7;
-            int n3=Character.getNumericValue(cnp.charAt(11))*9;
-            setterOfCnpAttributes(cnp);
-            return rest((s1+a1+a2+l1+l2+z1+z2+j1+j2+n1+n2+n3));
+    public int verificationNumber(String stringValueOfCnp) throws RuntimeException{
+        if(stringValueOfCnp.length() == 13){
+            int s1=Character.getNumericValue(stringValueOfCnp.charAt(0))*2;
+            int a1=Character.getNumericValue(stringValueOfCnp.charAt(1))*7;
+            int a2=Character.getNumericValue(stringValueOfCnp.charAt(2))*9;
+            int l1=Character.getNumericValue(stringValueOfCnp.charAt(3))*1;
+            int l2=Character.getNumericValue(stringValueOfCnp.charAt(4))*4;
+            int z1=Character.getNumericValue(stringValueOfCnp.charAt(5))*6;
+            int z2=Character.getNumericValue(stringValueOfCnp.charAt(6))*3;
+            int j1=Character.getNumericValue(stringValueOfCnp.charAt(7))*5;
+            int j2=Character.getNumericValue(stringValueOfCnp.charAt(8))*8;
+            int n1=Character.getNumericValue(stringValueOfCnp.charAt(9))*2;
+            int n2=Character.getNumericValue(stringValueOfCnp.charAt(10))*7;
+            int n3=Character.getNumericValue(stringValueOfCnp.charAt(11))*9;
+            setterOfCnpAttributes(stringValueOfCnp);
+            return verificationNumberCalculator((s1+a1+a2+l1+l2+z1+z2+j1+j2+n1+n2+n3));
         } else {
             throw new CnpLengthNotValid("CNP length is not valid. Please enter an valid CNP. ");
         }
     }
 
-    public int rest(int sum){
+    public int verificationNumberCalculator(int sum){
         if (sum%11<10){
             return sum%11;
         } else {
@@ -125,77 +129,103 @@ public class Cnp {
         }
     }
 
-    public String cnpValid(String stringValueOfCnp){
-        if(Character.getNumericValue(stringValueOfCnp.charAt(12)) == verificatioNumber(stringValueOfCnp)){
-            return "CNP IS VALID.";
+    public boolean isCnpValid(String stringValueOfCnp) throws RuntimeException{
+        if(Character.getNumericValue(stringValueOfCnp.charAt(12)) == verificationNumber(stringValueOfCnp)){
+            return true;
         } else {
-            return "CNP NOT VALID.";
+            throw new CnpLengthNotValid("Inserted CNP is not valid!");
         }
     }
 
 
-    private String verifyGender(String cnp){
-        char genderChar = cnp.charAt(0);
-        if(Integer.valueOf(genderChar)>0){
-            return String.valueOf(genderChar);
+    private boolean isGenderValid(String stringValueOfCnp){
+        char genderChar = stringValueOfCnp.charAt(0);
+        if(Integer.valueOf(genderChar)>0 && Integer.valueOf(genderChar) <= 9){
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
-    //Pay attention, this value won't be ever over 99 or a negative value, it is fine to check but it is pointless
-    private String verifyYearOfBirth(String cnp){
-        String year = cnp.substring(1,3);
-//        if(Integer.valueOf(year)>=10 && Integer.valueOf(year)<100){
-//            return year;
-//        }else if(year.equals("00")){
-//            return year;
-//        } else if (year.equals("01")) {
-//            return year;
-//        } else if (year.equals("02")) {
-//            return year;
-//        } else if (year.equals("03")) {
-//            return year;
-//        } else if (year.equals("04")) {
-//            return year;
-//        }else if(year.equals("05")){
-//            return year;
-//        } else if (year.equals("06")) {
-//            return year;
-//        } else if (year.equals("07")) {
-//            return year;
-//        } else if (year.equals("08")) {
-//            return year;
-//        } else if (year.equals("09")) {
-//            return year;
-//        } else {
-//            return null;
-//        }
-
-        if(year.matches("\\d{2}") && Integer.valueOf(year) >= 0 && Integer.valueOf(year)<100){
-            return year;
+    public boolean isYearOfBirthValid(String stringValueOfCnp){
+        String year = stringValueOfCnp.substring(1,3);
+        if(year.matches("\\d{2}") && Integer.valueOf(year) >= 0 && Integer.valueOf(year)<=99 && Integer.valueOf(year)>=00){
+            return true;
         } else {
-            return null;
+            return false;
         }
-
     }
 
-
-    private String verifyMonthOfBirth(String cnp){
-        if(Integer.valueOf(cnp.substring(4,6))> 12 && Integer.valueOf(cnp.substring(4,6)) < 1){
+    private boolean isMonthOfBirthValid(String stringValueOfCnp){
+        if(Integer.valueOf(stringValueOfCnp.substring(4,6))> 12 && Integer.valueOf(stringValueOfCnp.substring(4,6)) < 1 && Integer.valueOf(stringValueOfCnp.substring(4,6)) < 01){
             throw new MonthOfBirthNotValid("ERROR: Month of birth not valid!");
         } else {
-            return "Month of birth status: OK.";
+            return true;
         }
     }
 
-    private String verifyDayOfBirth(){
+//    private boolean isCountyCodeValid(String stringValueOfCnp){
+//
+//    }
+
+    public String extractDate(String stringValueOfCnp){
+        String dateOfBirth=stringValueOfCnp.substring(5,7);
+        String monthOfBirth=stringValueOfCnp.substring(3,5);
+        return dateOfBirth+"/"+monthOfBirth+"/"+transformYear(stringValueOfCnp);
+    }
+
+    public String transformYear(String stringValueOfCnp) throws RuntimeException{
+        String yearOfBirth=stringValueOfCnp.substring(1,3);
+        if(stringValueOfCnp.substring(0,1).equals("1")){
+            return "19"+yearOfBirth;
+        } else if (stringValueOfCnp.substring(0).equals("2")) {
+            return "19"+yearOfBirth;
+        } else if (stringValueOfCnp.substring(0).equals("3")) {
+            return "18"+yearOfBirth;
+        } else if (stringValueOfCnp.substring(0).equals("4")) {
+            return "18"+yearOfBirth;
+        } else if (stringValueOfCnp.substring(0).equals("5")) {
+            return "20"+yearOfBirth;
+        } else if (stringValueOfCnp.substring(0).equals("6")) {
+            return "20"+yearOfBirth;
+        } else if (stringValueOfCnp.substring(0).equals("0")) {
+            throw new YearOfBirthNotValid("Century and gender not valid.");
+        } else {
+            return askForYear();
+        }
+    }
+
+    public String askForYear(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please, enter your year of birth please: ");
+        String year = scanner.nextLine();
+        return year;
+    }
+
+    public void isCnpValid(String stringValueOfCnp, Cnp cnp){
+        DateValidator dateValidator = new DateValidator();
+        if (isCnpValid(stringValueOfCnp) == true){
+            System.out.print("CNP VALID : STATUS OK.");
+            if(isGenderValid(stringValueOfCnp)== true){
+                System.out.print("GENDER AND CENTURY VALID : STATUS OK.");
+                if(isYearOfBirthValid(stringValueOfCnp) == true){
+                    System.out.print("YEAR OF BIRTH VALID : STATUS OK.");
+                    if(isMonthOfBirthValid(stringValueOfCnp)== true){
+                        System.out.print("MONTH OF BIRTH VALID : STATUS OK.");
+                        if(dateValidator.verifyDate(extractDate(stringValueOfCnp)) == true){
+                            System.out.print("DATE OF BIRTH VALID : STATUS OK.");
+                            setterOfCnpAttributes(stringValueOfCnp);
+                        }
+                    }
+                }
+            }
+        }
 
     }
 
-//    private String verifyCountyCode(){
-//
-//    }
+
+
+
 
 
 }
