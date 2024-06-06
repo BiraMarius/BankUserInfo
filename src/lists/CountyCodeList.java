@@ -1,2 +1,5 @@
-package lists;public class CountyCodeList {
+package lists;
+
+public class CountyCodeList {
+
 }
