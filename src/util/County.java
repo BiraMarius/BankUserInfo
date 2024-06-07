@@ -4,6 +4,11 @@ public class County {
     String name;
     String code;
 
+    public County(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
     public String getName() {
         return name;
     }
